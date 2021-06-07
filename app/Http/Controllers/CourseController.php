@@ -24,6 +24,36 @@ class CourseController extends Controller
             ], 403);
         }
 
+        $this->registerCourseFunction($course_uuid);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "Course Registered Successfully"
+        ], 200);
+    }
+
+    public function registerCourses(request $request){
+        $student = Auth::user();
+
+        if($student->user_type != "student"){
+            return response()->json([
+                "status" => "failed",
+                "message" => "User is not a Student"
+            ], 403);
+        }
+
+        foreach($request->course_uuids as $course_uuid){
+            $this->registerCourseFunction($course_uuid);
+        }
+        
+        return response()->json([
+            "status" => "success",
+            "message" => "Courses Registered Successfully"
+        ], 200);
+    }
+
+    public function registerCourseFunction($course_uuid){
+        $student = Auth::user();
         $course = Course::where('uuid', $course_uuid)
                     ->first()
                     ->users()
@@ -31,10 +61,6 @@ class CourseController extends Controller
                         $student->id, 
                         ["status"=> "enrolled"]
                     );
-        return response()->json([
-            "status" => "success",
-            "message" => "Course Registered Successfully"
-        ], 200);
     }
 
     public function removeCourse($course_uuid){

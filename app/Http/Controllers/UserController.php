@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use JWTAuth;
 use Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
@@ -21,6 +22,31 @@ class UserController extends Controller
             "message" => "User Retrieved",
             "data" => $user
         ], 200);
+    }
+
+    public function getProfile(){
+        $user_uuid = Auth::user()->uuid;
+        $user = $this->getUserDetails($user_uuid);
+
+        return response()->json([
+            "status" => "success",
+            "message" => "User Retrieved",
+            "data" => $user
+        ], 200);
+    }
+
+    public function handshake(){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (Exception $e) {
+            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
+                return response()->json(['status' => 'Token is Invalid']);
+            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
+                return response()->json(['status' => 'Token is Expired']);
+            }else{
+                return response()->json(['status' => 'Authorization Token not found']);
+            }
+        }
     }
 
     public function getUserDetails($user_uuid){

@@ -186,6 +186,37 @@ class LectureController extends Controller
         ], 200);
     }
 
+    public function getLecturesByDay(request $request, $date){
+        $user = Auth::user();
+        $now = Carbon::now();
+        $date = Carbon::createFromFormat('Y-m-d', $date);
+
+        if($user->user_type === "student"){
+            $courses = $user->courses()->wherePivot('status', 'enrolled')->get();
+        }else if($user->user_type === "lecturer"){
+            $courses = $user->courses()->wherePivot('status', 'teaching')->get();
+        }else{
+            $courses = $user->courses()->get();
+        }
+        
+        $lectures = [];
+        foreach($courses as $course){
+            $course_lectures = $course->lectures()->orderBy('start_time', 'asc')->get();
+            foreach($course_lectures as $lecture){
+                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->start_time);
+                if($dateTime->isSameDay($date)){
+                    array_push($lectures, $this->getLectureDetails($lecture_uuid));
+                }
+            }
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "User's Lectures By Day Retrieved Successfully",
+            "data" => $lectures
+        ], 200);
+    }
+
     public function getPreviousLectures(request $request){
         $user = Auth::user();
         $now = Carbon::now();
@@ -214,6 +245,32 @@ class LectureController extends Controller
             "message" => "User's Previous Lectures Retrieved Successfully",
             "data" => $lectures
         ], 200);
+    }
+
+    public function getUserPreviousLectures(request $request){
+        $user = Auth::user();
+        $now = Carbon::now();
+
+        if($user->user_type === "student"){
+            $courses = $user->courses()->wherePivot('status', 'enrolled')->get();
+        }else if($user->user_type === "lecturer"){
+            $courses = $user->courses()->wherePivot('status', 'teaching')->get();
+        }else{
+            $courses = $user->courses()->get();
+        }
+        
+        $lectures = [];
+        foreach($courses as $course){
+            $course_lectures = $course->lectures()->orderBy('start_time', 'desc')->get();
+            foreach($course_lectures as $lecture){
+                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->end_time);
+                if($dateTime->lessThan($now)){
+                    array_push($lectures, $lecture);
+                }
+            }
+        }
+
+        return $lectures;
     }
 
     public function getLectures(request $request){
