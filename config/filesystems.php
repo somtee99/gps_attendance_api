@@ -50,11 +50,6 @@ return [
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
-        ],
-
-        '120' => [
-            'driver' => 'local',
-            'root' => public_path('app/public'),
         ]
 
     ],
