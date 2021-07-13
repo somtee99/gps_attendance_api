@@ -19,23 +19,26 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::post('/login-action', 'UserController@loginAction');
-Route::post('/create-lecture-action', 'LectureController@createLectureAction');
 
 Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/lectures', function () {
-    return view('lectures.show');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/lectures', function () {
+        return view('lectures.show');
+    });
+    Route::post('/create-lecture-action', 'LectureController@createLectureAction');
+
+    Route::get('/lecture/create', function () {
+        return view('lectures.create');
+    });
+
+    Route::get('/attendance/{lecture_uuid}', function () {
+        return view('attendances');
+    });
 });
 
-Route::get('/lecture/create', function () {
-    return view('lectures.create');
-});
-
-Route::get('/attendance/{lecture_uuid}', function () {
-    return view('attendances');
-});

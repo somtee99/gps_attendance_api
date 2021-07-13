@@ -190,7 +190,7 @@ class UserController extends Controller
             ])
         ){
             $user = Auth::user(); 
-            $token =  $user->createToken('MyApp')->accessToken; 
+            Auth::login($user); 
 
             return redirect('/lectures');
           
