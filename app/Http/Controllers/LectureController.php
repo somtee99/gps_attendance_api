@@ -57,6 +57,18 @@ class LectureController extends Controller
         ], 200);
     }
 
+    public function createLectureAction(request $request){
+
+        $data['uuid'] = Str::uuid();
+        $data['course_uuid'] = $request->course_uuid;
+        $data['hall_uuid'] = $request->hall_uuid;
+        $data['start_time'] = $request->start_time;    
+        $data['end_time'] = $request->end_time;     
+
+        $lecture = Lecture::create($data);
+        return redirect('/lectures');
+    }
+
     public function checkIfHallIsAvailable(String $hall_uuid, Carbon $startTime, Carbon $endTime){
         //get lectures for that day
         $lectures = Lecture::where('hall_uuid', $hall_uuid)

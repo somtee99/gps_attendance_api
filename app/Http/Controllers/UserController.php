@@ -35,19 +35,19 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function handshake(){
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
-        } catch (Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
-                return response()->json(['status' => 'Token is Invalid']);
-            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
-                return response()->json(['status' => 'Token is Expired']);
-            }else{
-                return response()->json(['status' => 'Authorization Token not found']);
-            }
-        }
-    }
+    // public function handshake(){
+    //     try {
+    //         $user = JWTAuth::parseToken()->authenticate();
+    //     } catch (Exception $e) {
+    //         if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
+    //             return response()->json(['status' => 'Token is Invalid']);
+    //         }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
+    //             return response()->json(['status' => 'Token is Expired']);
+    //         }else{
+    //             return response()->json(['status' => 'Authorization Token not found']);
+    //         }
+    //     }
+    // }
 
     public function getUserDetails($user_uuid){
         $attendance_controller = new AttendanceController();
@@ -165,4 +165,38 @@ class UserController extends Controller
             ], 401);
         }
     }
+
+    public function loginAction(request $request){
+        $validation = Validator::make($request->all(), [
+            "email" => "required",
+            "password" => "required"
+        ]);
+
+        if($validation->fails()){
+            return response()->json([
+                "status" => "failed",
+                "message" => "Invalid Input"
+            ], 400);
+        }
+        
+        if(
+            Auth::attempt([
+                'matric_no' => request('email'), 
+                'password' => request('password') 
+            ])||
+            Auth::attempt([
+                'email' => request('email'), 
+                'password' => request('password')
+            ])
+        ){
+            $user = Auth::user(); 
+            $token =  $user->createToken('MyApp')->accessToken; 
+
+            return redirect('/lectures');
+          
+        }else{
+            return redirect('/login');
+        }
+    }
+
 }
