@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lecture;
+use App\Models\Course;
+use App\Models\Hall;
 use App\Models\Attendance;
 use Validator;
 use Illuminate\Http\Request;
@@ -186,6 +188,32 @@ class LectureController extends Controller
             foreach($course_lectures as $lecture){
                 $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->start_time);
                 if($dateTime->greaterThanOrEqualTo($now)){
+                    array_push($lectures, $lecture);
+                }
+            }
+        }
+
+        return response()->json([
+            "status" => "success",
+            "message" => "User's Next Lectures Retrieved Successfully",
+            "data" => $lectures
+        ], 200);
+    }
+
+    public function getNextLectures2(request $request){
+        $user = Auth::user();
+        $now = Carbon::now();
+
+        $courses = Course::all();
+        
+        $lectures = [];
+        foreach($courses as $course){
+            $course_lectures = $course->lectures()->orderBy('start_time', 'asc')->get();
+            foreach($course_lectures as $lecture){
+                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->start_time);
+                if($dateTime->greaterThanOrEqualTo($now)){
+                    $lecture['hall'] = Hall::where('uuid', $lecture->hall_uuid)->first();
+                    $lecture['course'] = Course::where('uuid', $lecture->course_uuid)->first();
                     array_push($lectures, $lecture);
                 }
             }

@@ -36,7 +36,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('lecture/set/weekly/{no_of_weeks}', 'LectureController@setWeeklyLectures'); //incomplete
         Route::put('lecture/edit/{lecture_uuid}', 'LectureController@editLecture');
         Route::delete('lecture/delete/{lecture_uuid}', 'LectureController@deleteLecture');
-        Route::get('lectures/next', 'LectureController@getNextLectures');
+        Route::get('lectures/next', 'LectureController@getNextLectures2'); //edited to use a getNextLectures2
         Route::get('lectures/previous', 'LectureController@getPreviousLectures');
         Route::get('lectures/all', 'LectureController@getLectures');
         Route::get('lectures/day/{date}', 'LectureController@getLecturesByDay');

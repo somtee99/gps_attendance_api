@@ -81,7 +81,7 @@ button {
         <input type="datetime-local" id="end_time" name="end_time" required>
 
             
-        <button type="submit">Login</button>   
+        <button type="submit">Create</button>   
              
         </div>   
     </form>     
