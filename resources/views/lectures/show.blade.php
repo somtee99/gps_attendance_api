@@ -26,7 +26,8 @@ tr:nth-child(even) {
 </a>
 <table>
   <tr>
-    <th>Course</th>
+    <th>Course Code</th>
+    <th>Course Title</th>
     <th>Hall</th>
     <th>Start Time</th>
     <th>End Time</th>
@@ -46,6 +47,7 @@ tr:nth-child(even) {
     @endphp
     <tr>
         <td>{{ $course->course_code }}</td>
+        <td>{{ $course->title }}</td>
         <td>{{ $hall->name }}</td>
         <td>{{ $lecture->start_time }}</td>
         <td>{{ $lecture->end_time }}</td>
