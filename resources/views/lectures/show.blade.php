@@ -31,6 +31,7 @@ tr:nth-child(even) {
     <th>Hall</th>
     <th>Start Time</th>
     <th>End Time</th>
+    <th>Action</th>
   </tr>
 @php
   
@@ -51,6 +52,11 @@ tr:nth-child(even) {
         <td>{{ $hall->name }}</td>
         <td>{{ $lecture->start_time }}</td>
         <td>{{ $lecture->end_time }}</td>
+        <td>
+            <a href="{{ url('/attendance/'.$lecture->uuid) }}">
+                <button>View Attendance</button> 
+            </a>
+        </td>
     </tr>
 @endforeach
   

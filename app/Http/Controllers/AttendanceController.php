@@ -114,6 +114,20 @@ class AttendanceController extends Controller
         ], 200);
     }
 
+    public function getAttendees2($lecture_uuid){
+        $attendees_uuids = Attendance::where('lecture_uuid', $lecture_uuid)
+                            ->where('type', 'sign in')->pluck('user_uuid');
+        $attendees = [];
+
+        foreach($attendees_uuids as $attendee_uuid){
+            $attendee = User::where('uuid', $attendee_uuid)->first();
+            // $attendee['attendance'] = Attendance::where('uuid', $attendee_uuid)->first();
+            array_push($attendees, $attendee);
+        }
+
+        return view('attendances', compact('attendees'));
+    }
+
     public function getAbsentees($lecture_uuid){
         $users_uuids = Lecture::where('uuid', $lecture_uuid)->first()
                         ->course()->first()->users()->pluck('uuid')->toArray();

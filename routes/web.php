@@ -37,8 +37,6 @@ Route::group(['middleware' => ['auth']], function () {
         return view('lectures.create');
     });
 
-    Route::get('/attendance/{lecture_uuid}', function () {
-        return view('attendances');
-    });
+    Route::get('/attendance/{lecture_uuid}', 'AttendanceController@getAttendees2');
 });
 
