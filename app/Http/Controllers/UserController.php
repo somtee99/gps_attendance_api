@@ -166,19 +166,7 @@ class UserController extends Controller
         }
     }
 
-    public function loginAction(request $request){
-        $validation = Validator::make($request->all(), [
-            "email" => "required",
-            "password" => "required"
-        ]);
-
-        if($validation->fails()){
-            return response()->json([
-                "status" => "failed",
-                "message" => "Invalid Input"
-            ], 400);
-        }
-        
+    public function loginAction(request $request){       
         if(
             Auth::attempt([
                 'matric_no' => request('email'), 
