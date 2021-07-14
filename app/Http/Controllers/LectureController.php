@@ -207,7 +207,7 @@ class LectureController extends Controller
         $courses = Course::all();
         
         $lectures = [];
-        $all_lectures = Lecture::all();
+        $all_lectures = Lecture::all()->orderBy('start_time', 'asc')->get();;
         foreach($all_lectures as $lecture){
             $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->end_time);
             if($dateTime->greaterThanOrEqualTo($now)){
