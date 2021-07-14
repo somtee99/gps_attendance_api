@@ -211,7 +211,7 @@ class LectureController extends Controller
             if($dateTime->greaterThanOrEqualTo($now)){
                 $lecture['hall'] = Hall::where('uuid', $lecture->hall_uuid)->first();
                 $lecture['course'] = Course::where('uuid', $lecture->course_uuid)->first();
-                $lecture['has_signed'] = Attendance::where('user_uuid', $user->uuid)->where('lecture_uuid', $lecture_uuid)
+                $lecture['has_signed'] = Attendance::where('user_uuid', $user->uuid)->where('lecture_uuid', $lecture->uuid)
                                         ->where('type', 'sign in')->exists();
                 array_push($lectures, $lecture);
             }
