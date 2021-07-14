@@ -243,7 +243,7 @@ class LectureController extends Controller
         foreach($courses as $course){
             $course_lectures = $course->lectures()->orderBy('start_time', 'asc')->get();
             foreach($course_lectures as $lecture){
-                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->start_time);
+                $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->end_time);
                 if($dateTime->isSameDay($date)){
                     array_push($lectures, $this->getLectureDetails($lecture_uuid));
                 }
