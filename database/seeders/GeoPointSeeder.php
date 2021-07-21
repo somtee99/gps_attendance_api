@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Hall;
+use App\Models\GeoPoint;
 use Illuminate\Support\Str;
 
 class GeoPointSeeder extends Seeder
