@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lecture;
 use App\Models\Course;
 use App\Models\Hall;
+use App\Models\GeoPoint;
 use App\Models\Attendance;
 use Validator;
 use Illuminate\Http\Request;
