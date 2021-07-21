@@ -19,15 +19,11 @@ class HallSeeder extends Seeder
         $halls = [
             [
                 "uuid" => Str::uuid(),
-                "name" => "Multi-Purpose Hall",
-                "longitude" => "",
-                "latitude" => ""
+                "name" => "Multi-Purpose Hall"
             ],
             [
                 "uuid" => Str::uuid(),
-                "name" => "Edozien Lecture Theatre",
-                "longitude" => "",
-                "latitude" => ""
+                "name" => "Edozien Lecture Theatre"
             ]
         ];
 

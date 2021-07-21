@@ -12,8 +12,7 @@ class Device extends Model
     protected $fillable = [
         'uuid',
         'user_uuid',
-        'ip_address',
-        'mac_adress'
+        'info'
     ];
 
     public function user(){

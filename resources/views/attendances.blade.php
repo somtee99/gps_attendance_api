@@ -24,17 +24,19 @@ tr:nth-child(even) {
 </br>
 <table>
   <tr>
+    <th>Matric No</th>
     <th>Last Name</th>
     <th>First Name</th>
-    <th>Matric No</th>
+    <th>Time</th>
     <th>Email</th>
   </tr>
 
 @foreach ($attendees as $attendee)
     <tr>
+        <td>{{ $attendee->matric_no }}</td>
         <td>{{ $attendee->last_name }}</td>
         <td>{{ $attendee->first_name }}</td>
-        <td>{{ $attendee->matric_no }}</td>
+        <td>{{ $attendee->attendance->created_at }}</td>
         <td>{{ $attendee->email }}</td>
     </tr>
 @endforeach

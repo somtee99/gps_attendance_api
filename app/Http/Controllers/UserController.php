@@ -86,6 +86,12 @@ class UserController extends Controller
 
         $student = User::create($data);
 
+        $device['uuid'] = Str::uuid();
+        $device['user_uuid'] = $data['uuid'];
+        $device['info'] = $request->device_info;
+
+        Device::create($device);
+
         return response()->json([
             "status" => "success",
             "message" => "Student Registered Successfully",
@@ -129,13 +135,23 @@ class UserController extends Controller
     public function login(request $request){
         $validation = Validator::make($request->all(), [
             "email" => "required",
-            "password" => "required"
+            "password" => "required",
         ]);
 
         if($validation->fails()){
             return response()->json([
                 "status" => "failed",
                 "message" => "Invalid Input"
+            ], 400);
+        }
+
+        //check if device is logged on to another one
+        $user_uuid = User::where('email', request('email'))->first()->uuid;
+        $device_info = Device::where('user_uuid', $user_uuid)->first()->info;
+        if($device_info != request('device_info')){
+            return response()->json([
+                "status" => "failed",
+                "message" => "Account is already used by another device"
             ], 400);
         }
         

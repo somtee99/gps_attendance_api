@@ -115,13 +115,14 @@ class AttendanceController extends Controller
     }
 
     public function getAttendees2($lecture_uuid){
-        $attendees_uuids = Attendance::where('lecture_uuid', $lecture_uuid)
-                            ->where('type', 'sign in')->pluck('user_uuid');
         $attendees = [];
 
-        foreach($attendees_uuids as $attendee_uuid){
-            $attendee = User::where('uuid', $attendee_uuid)->first();
-            // $attendee['attendance'] = Attendance::where('uuid', $attendee_uuid)->first();
+        $attendances = Attendance::where('lecture_uuid', $lecture_uuid)
+                        ->where('type', 'sign in')->get();
+                        
+        foreach($attendances as $attendance){
+            $attendee = User::where('uuid', $attendance->user_uuid)->first();
+            $attendee['attendance'] = Attendance::where('uuid', $attendance->uuid)->first();
             array_push($attendees, $attendee);
         }
 

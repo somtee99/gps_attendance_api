@@ -210,6 +210,7 @@ class LectureController extends Controller
             $dateTime = Carbon::createFromFormat('Y-m-d H:i:s', $lecture->end_time);
             if($dateTime->greaterThanOrEqualTo($now)){
                 $lecture['hall'] = Hall::where('uuid', $lecture->hall_uuid)->first();
+                $lecture['geo_points'] = GeoPoint::where('hall_uuid', $lecture->hall_uuid)->get();
                 $lecture['course'] = Course::where('uuid', $lecture->course_uuid)->first();
                 $lecture['has_signed'] = Attendance::where('user_uuid', $user->uuid)->where('lecture_uuid', $lecture->uuid)
                                         ->where('type', 'sign in')->exists();
