@@ -11,10 +11,10 @@ class Hall extends Model
 
     protected $fillable = [
         'uuid',
-        'name',
-        'longitude',
-        'latitude',
-        'elevation'
+        'name'
+        // 'longitude',
+        // 'latitude',
+        // 'elevation'
     ];
     
     public function lectures()

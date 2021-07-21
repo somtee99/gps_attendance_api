@@ -24,7 +24,19 @@ class HallSeeder extends Seeder
             [
                 "uuid" => Str::uuid(),
                 "name" => "Edozien Lecture Theatre"
-            ]
+            ],
+            [
+                "uuid" => Str::uuid(),
+                "name" => "Hall D"
+            ],
+            [
+                "uuid" => Str::uuid(),
+                "name" => "Adenuga Lecture Hall"
+            ],
+            // [
+            //     "uuid" => Str::uuid(),
+            //     "name" => "Edozien Lecture Theatre"
+            // ]
         ];
 
         foreach($halls as $hall){

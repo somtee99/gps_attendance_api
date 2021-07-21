@@ -40,7 +40,7 @@ class GeoPointSeeder extends Seeder
                 ]
             ],
             [
-                "hall_name" => "Edozien Lecture Hall",
+                "hall_name" => "Edozien Lecture Theatre",
                 "geo_points" => [
                     [
                         "latitude" => "6.684236983515404",
