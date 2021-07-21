@@ -53,7 +53,7 @@ class UserController extends Controller
         $attendance_controller = new AttendanceController();
     
         $user = User::where('uuid', $user_uuid)->first();
-        $user['attendance rate'] = $attendance_controller->getUserAttendanceRate($user_uuid);
+        $user['attendance_rate'] = $attendance_controller->getUserAttendanceRate($user_uuid);
 
         return $user;
     }
@@ -75,7 +75,7 @@ class UserController extends Controller
             ], 400);
         }
 
-        //check if device is logged on to another one
+        //check if Device is already used by another account
         if(Device::where('info', request->device_info)->exists()){
             return response()->json([
                 "status" => "failed",
@@ -154,7 +154,7 @@ class UserController extends Controller
             ], 400);
         }
 
-        //check if device is logged on to another one
+        //check if Device is already used by another account
         $user_uuid = User::where('email', request('email'))->first()->uuid;
         $device_info = Device::where('user_uuid', $user_uuid)->first()->info;
         if($device_info != request('device_info')){
