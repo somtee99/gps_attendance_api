@@ -77,7 +77,7 @@ class UserController extends Controller
         }
 
         //check if Device is already used by another account
-        if(Device::where('info', request->device_info)->exists()){
+        if(Device::where('info', $request->device_info)->exists()){
             return response()->json([
                 "status" => "failed",
                 "message" => "Device is already used by another account"
