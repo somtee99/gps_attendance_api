@@ -75,6 +75,15 @@ class UserController extends Controller
             ], 400);
         }
 
+        //check if device is logged on to another one
+        if(Device::where('info', request->device_info)->exists()){
+            return response()->json([
+                "status" => "failed",
+                "message" => "Device is already used by another account"
+            ], 400);
+        }
+        
+
         $data['uuid'] = Str::uuid();
         $data['first_name'] = $request->first_name;
         $data['middle_name'] = $request->middle_name;
@@ -151,7 +160,7 @@ class UserController extends Controller
         if($device_info != request('device_info')){
             return response()->json([
                 "status" => "failed",
-                "message" => "Account is already used by another device"
+                "message" => "Device is already used by another account"
             ], 400);
         }
         
