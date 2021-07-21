@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Device;
 use JWTAuth;
 use Validator;
 use Illuminate\Http\Request;
