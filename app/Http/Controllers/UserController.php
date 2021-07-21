@@ -82,8 +82,7 @@ class UserController extends Controller
                 "status" => "failed",
                 "message" => "Device is already used by another account"
             ], 400);
-        }
-        
+        } 
 
         $data['uuid'] = Str::uuid();
         $data['first_name'] = $request->first_name;
@@ -96,11 +95,14 @@ class UserController extends Controller
 
         $student = User::create($data);
 
-        $device['uuid'] = Str::uuid();
-        $device['user_uuid'] = $data['uuid'];
-        $device['info'] = $request->device_info;
+        if($request->device_info){
+            $device['uuid'] = Str::uuid();
+            $device['user_uuid'] = $data['uuid'];
+            $device['info'] = $request->device_info;
 
-        Device::create($device);
+            Device::create($device);
+        }
+        
 
         return response()->json([
             "status" => "success",
@@ -154,16 +156,6 @@ class UserController extends Controller
                 "message" => "Invalid Input"
             ], 400);
         }
-
-        //check if Device is already used by another account
-        $user_uuid = User::where('email', request('email'))->first()->uuid;
-        $device_info = Device::where('user_uuid', $user_uuid)->first()->info;
-        if($device_info != request('device_info')){
-            return response()->json([
-                "status" => "failed",
-                "message" => "Device is already used by another account"
-            ], 400);
-        }
         
         if(
             Auth::attempt([
@@ -176,6 +168,18 @@ class UserController extends Controller
             ])
         ){
             $user = Auth::user(); 
+            //check if Device is already used by another account
+            $device = Device::where('user_uuid', $user->uuid)->first();
+            if($device && $request->device_info){
+                $device_info = $device->info;
+                if($device_info != request('device_info')){
+                    return response()->json([
+                        "status" => "failed",
+                        "message" => "Device is already used by another account"
+                    ], 400);
+                }
+            }
+            
             $token =  $user->createToken('MyApp')->accessToken; 
             
             return response()-> json([
